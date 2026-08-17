@@ -488,5 +488,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.filename }}-macos-${{ matrix.job.arch }}
-          path: $GITHUB_WORKSPACE/${{ env.filename }}-${{ matrix.job.arch }}.dmg
+          path: ./${{ env.filename }}-${{ matrix.job.arch }}.dmg
           if-no-files-found: warn
