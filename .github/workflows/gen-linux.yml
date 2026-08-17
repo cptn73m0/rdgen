@@ -593,6 +593,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y libarchive-tools libfuse2
+          sudo pip3 install "setuptools<80"
           sudo pip3 install git+https://github.com/rustdesk-org/appimage-builder.git
           pushd appimage
           sudo appimage-builder --skip-tests --recipe ./AppImageBuilder-${{ matrix.job.arch }}.yml
