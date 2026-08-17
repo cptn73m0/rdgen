@@ -151,6 +151,12 @@ jobs:
           curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/customUpdate.py -o customUpdate.py
           python3 customUpdate.py
 
+      - name: Enable permanent password dialog (desktop)
+        shell: bash
+        run: |
+          curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/clientPassword.py -o clientPassword.py
+          python3 clientPassword.py flutter/lib/desktop/pages/desktop_home_page.dart
+
       - name: Set Swap Space
         if: ${{ matrix.job.arch == 'x86_64' }}
         uses: pierotofy/set-swap-space@master

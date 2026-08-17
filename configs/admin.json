@@ -40,8 +40,8 @@
       "enable-remote-printer": "Y",
       "enable-camera": "Y",
       "enable-terminal": "Y",
-      "enable-check-update": "Y",
-      "allow-auto-update": "Y"
+      "enable-check-update": "N",
+      "allow-auto-update": "N"
     }
   }
 }

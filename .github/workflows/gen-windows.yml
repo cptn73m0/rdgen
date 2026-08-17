@@ -140,6 +140,12 @@ jobs:
           curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/windowsQuotes.py -o windowsQuotes.py
           python3 windowsQuotes.py
 
+      - name: Enable permanent password dialog (desktop)
+        shell: bash
+        run: |
+          curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/clientPassword.py -o clientPassword.py
+          python3 clientPassword.py flutter/lib/desktop/pages/desktop_home_page.dart
+
       - name: Restore bridge files
         uses: actions/download-artifact@master
         with:
