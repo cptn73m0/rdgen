@@ -128,9 +128,8 @@ jobs:
 
       - name: Apply custom update patch
         shell: bash
-        continue-on-error: true
         run: |
-          cp .github/patches/customUpdate.py customUpdate.py
+          curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/customUpdate.py -o customUpdate.py
           python3 customUpdate.py
 
       - name: Restore bridge files
@@ -168,11 +167,11 @@ jobs:
           sed -i -e 's|VALUE "InternalName", "rustdesk" "\0"|VALUE "InternalName", "${{ env.appprefix }}" "\0"|' ./flutter/windows/runner/Runner.rc
           sed -i -e 's|"rustdesk.exe"|"${{ env.filename }}.exe"|' ./flutter/windows/runner/Runner.rc
           sed -i -e 's|"RustDesk"|"${{ env.appprefix }}"|' ./flutter/windows/runner/Runner.rc
-          sed -i -e "s|title: 'RustDesk'|title: '${{ env.appname }}'|" ./flutter/lib/main.dart
+          sed -i -e "s|title: 'RustDesk'|title: '${{ env.displayname }}'|" ./flutter/lib/main.dart
           if [ ! -z "${{ env.compname }}" ]; then
             find ./src/lang -name "*.rs" -exec sed -i '/powered_by_me/s|RustDesk|${{ env.compname }}|g' {} \;
           fi
-          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.displayname }}|' {} \;
           sed -i -e 's|RustDesk|${{ env.appname }}|' ./res/msi/Package/License.rtf
 
       - name: fix registry if appname has a space
@@ -442,7 +441,7 @@ jobs:
           timeout_minutes: 1
           max_attempts: 3
           shell: pwsh
-          continue-on-error: true
+          continue_on_error: true
           command: |
             Invoke-WebRequest -Uri "${{ env.ASSET_BASE }}/logo.png" -OutFile ./rustdesk/data/flutter_assets/assets/logo.png
 

@@ -145,9 +145,8 @@ jobs:
 
       - name: Apply custom update patch
         shell: bash
-        continue-on-error: true
         run: |
-          cp .github/patches/customUpdate.py customUpdate.py
+          curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/customUpdate.py -o customUpdate.py
           python3 customUpdate.py
 
       - name: Set Swap Space
@@ -255,8 +254,8 @@ jobs:
           sed -i -e 's|FileDescription = "RustDesk Remote Desktop"|FileDescription = "${{ env.appname }}"|' ./libs/portable/Cargo.toml
           sed -i -e 's|OriginalFilename = "rustdesk.exe"|OriginalFilename = "${{ env.appname }}.exe"|' ./libs/portable/Cargo.toml
           sed -i -e 's|const APP_PREFIX: \&str = "rustdesk";|const APP_PREFIX: \&str = "${{ env.appprefix }}";|' ./libs/portable/src/main.rs
-          sed -i -e "s|title: 'RustDesk'|title: '${{ env.appname }}'|" ./flutter/lib/main.dart
-          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
+          sed -i -e "s|title: 'RustDesk'|title: '${{ env.displayname }}'|" ./flutter/lib/main.dart
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.displayname }}|' {} \;
           sed -i -e '/-p tmpdeb\/usr\/lib\/rustdesk/d' ./build.py
 
       - name: change company name

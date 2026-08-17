@@ -185,9 +185,8 @@ jobs:
 
       - name: Apply custom update patch
         shell: bash
-        continue-on-error: true
         run: |
-          cp .github/patches/customUpdate.py customUpdate.py
+          curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/customUpdate.py -o customUpdate.py
           python3 customUpdate.py
 
       - name: Install flutter
@@ -310,18 +309,18 @@ jobs:
           sed -i -e 's|FileDescription = "RustDesk Remote Desktop"|FileDescription = "${{ env.appname }}"|' ./Cargo.toml
           sed -i -e 's|OriginalFilename = "rustdesk.exe"|OriginalFilename = "${{ env.filename }}.exe"|' ./Cargo.toml
           sed -i 's|name = "RustDesk"|name = "${{ env.appprefix }}"|' ./Cargo.toml
-          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
-          sed -i -e 's|RustDesk|${{ env.appname }}|' ./flutter/android/app/src/main/res/values/strings.xml
-          sed -i -e "s|title: 'RustDesk'|title: '${{ env.appname }}'|" ./flutter/lib/main.dart
-          sed -i -e "s|return 'RustDesk';|return '${{ env.appname }}';|" ./flutter/lib/web/bridge.dart
-          sed -i 's|android:label="RustDesk"|android:label="${{ env.appname }}"|' ./flutter/android/app/src/main/AndroidManifest.xml
-          sed -i 's|android:label="RustDesk Input"|android:label="${{ env.appname }} Input"|' ./flutter/android/app/src/main/AndroidManifest.xml
-          sed -i 's|RustDesk is Open|${{ env.appname }} is Open|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/BootReceiver.kt
-          sed -i 's|Show Rustdesk|Show ${{ env.appname }}|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/FloatingWindowService.kt
-          sed -i 's|"RustDesk"|"${{ env.appname }}"|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainService.kt
-          sed -i 's|"RustDesk Service|"${{ env.appname }} Service|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainService.kt
-          sed -i 's|RustDesk|${{ env.appname }}|' ./flutter/lib/main.dart
-          sed -i 's|"RustDesk"|"${{ env.appname }}"|' ./flutter/lib/desktop/widgets/tabbar_widget.dart
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.displayname }}|' {} \;
+          sed -i -e 's|RustDesk|${{ env.displayname }}|' ./flutter/android/app/src/main/res/values/strings.xml
+          sed -i -e "s|title: 'RustDesk'|title: '${{ env.displayname }}'|" ./flutter/lib/main.dart
+          sed -i -e "s|return 'RustDesk';|return '${{ env.displayname }}';|" ./flutter/lib/web/bridge.dart
+          sed -i 's|android:label="RustDesk"|android:label="${{ env.displayname }}"|' ./flutter/android/app/src/main/AndroidManifest.xml
+          sed -i 's|android:label="RustDesk Input"|android:label="${{ env.displayname }} Input"|' ./flutter/android/app/src/main/AndroidManifest.xml
+          sed -i 's|RustDesk is Open|${{ env.displayname }} is Open|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/BootReceiver.kt
+          sed -i 's|Show Rustdesk|Show ${{ env.displayname }}|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/FloatingWindowService.kt
+          sed -i 's|"RustDesk"|"${{ env.displayname }}"|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainService.kt
+          sed -i 's|"RustDesk Service|"${{ env.displayname }} Service|' ./flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainService.kt
+          sed -i 's|RustDesk|${{ env.displayname }}|' ./flutter/lib/main.dart
+          sed -i 's|"RustDesk"|"${{ env.displayname }}"|' ./flutter/lib/desktop/widgets/tabbar_widget.dart
           sed -i 's|"RustDesk"|"${{ env.appprefix }}"|' ./libs/hbb_common/src/config.rs
 
       - name: change url to custom
