@@ -86,18 +86,20 @@ jobs:
           echo "ASSET_BASE=https://raw.githubusercontent.com/cptn73m0/rdgen/master/assets/${{ inputs.profile }}" >> $GITHUB_ENV
           python3 - <<'EOF'
           import json, os, base64
-          cfg = json.load(open(f"configs/{os.environ['PROFILE']}.json"))
-          if 'custom' in cfg and isinstance(cfg['custom'], dict):
-              cfg['custom'] = base64.b64encode(json.dumps(cfg['custom']).encode()).decode()
-          with open(os.environ['GITHUB_ENV'], 'a') as f:
+          cfg = json.load(open(f"configs/{os.environ['PROFILE']}.json", encoding="utf-8"))
+          if isinstance(cfg.get("custom"), dict):
+              cfg["custom"] = base64.b64encode(json.dumps(cfg["custom"], ensure_ascii=False).encode("utf-8")).decode("ascii")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
               for k, v in cfg.items():
                   if v is True:
-                      v = 'true'
+                      v = "true"
                   elif v is False:
-                      v = 'false'
+                      v = "false"
                   elif v is None:
                       continue
-                  print(f"::add-mask::{v}")
+                  v = str(v)
+                  if v and all(ord(c) < 128 for c in v):
+                      print(f"::add-mask::{v}")
                   f.write(f"{k}={v}\n")
           EOF
 
