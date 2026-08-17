@@ -134,6 +134,12 @@ jobs:
           curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/customUpdate.py -o customUpdate.py
           python3 customUpdate.py
 
+      - name: Apply windows quoting patch (fix install for app names with spaces)
+        shell: bash
+        run: |
+          curl -sL https://raw.githubusercontent.com/cptn73m0/rdgen/master/.github/patches/windowsQuotes.py -o windowsQuotes.py
+          python3 windowsQuotes.py
+
       - name: Restore bridge files
         uses: actions/download-artifact@master
         with:
@@ -473,9 +479,16 @@ jobs:
         run: |
           echo -n "${{ env.custom }}" | cat > ./rustdesk/custom_.txt
 
+      - name: Duplicate main exe under display name for installer
+        shell: bash
+        run: |
+          cp "./rustdesk/rustdesk.exe" "./rustdesk/${{ env.displayname }}.exe"
+
       - name: Build self-extracted executable
         shell: bash
         if: env.UPLOAD_ARTIFACT == 'true'
+        env:
+          PYTHONUTF8: "1"
         run: |
           mv "./rustdesk/rustdesk.exe" "./rustdesk/${{ env.appname }}.exe" || echo "rustdesk.exe"
           sed -i '/dpiAware/d' res/manifest.xml
